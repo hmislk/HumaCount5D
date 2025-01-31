@@ -1,4 +1,4 @@
-package org.carecode.mw.lims.mw.indiko;
+package org.carecode.mw.lims.mw.humaCount5D;
 
 import com.google.gson.Gson;
 import com.google.gson.JsonArray;
@@ -16,7 +16,7 @@ import java.util.List;
 import org.carecode.lims.libraries.DataBundle;
 import org.carecode.lims.libraries.QueryRecord;
 import org.carecode.lims.libraries.ResultsRecord;
-import static org.carecode.mw.lims.mw.indiko.Indiko.logger;
+import static org.carecode.mw.lims.mw.humaCount5D.HumaCount5D.logger;
 
 public class LISCommunicator {
 
@@ -136,11 +136,11 @@ public class LISCommunicator {
 
                 // Optionally process the server response (if needed)
                 JsonObject responseObject = JsonParser.parseString(response.toString()).getAsJsonObject();
-                Indiko.logger.info("Response from server: " + responseObject.toString());
+                HumaCount5D.logger.info("Response from server: " + responseObject.toString());
 
 // Extract status
                 String status = responseObject.get("status").getAsString();
-                Indiko.logger.info("Status: " + status);
+                HumaCount5D.logger.info("Status: " + status);
 
 // Extract the list of ResultsRecord objects
                 Gson gson = new Gson();
@@ -155,7 +155,7 @@ public class LISCommunicator {
 
 // Log and process the ResultsRecord objects as needed
                 for (ResultsRecord record : resultsRecords) {
-                    Indiko.logger.info("Sample ID: " + record.getSampleId()
+                    HumaCount5D.logger.info("Sample ID: " + record.getSampleId()
                             + ", Test: " + record.getTestCode()
                             + ", Status: " + record.getStatus());
                 }

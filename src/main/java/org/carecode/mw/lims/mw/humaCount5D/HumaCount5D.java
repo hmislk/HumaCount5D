@@ -1,4 +1,4 @@
-package org.carecode.mw.lims.mw.indiko;
+package org.carecode.mw.lims.mw.humaCount5D;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -7,14 +7,14 @@ import org.carecode.lims.libraries.PatientRecord;
 import org.carecode.lims.libraries.QueryRecord;
 import org.carecode.lims.libraries.ResultsRecord;
 
-public class Indiko {
+public class HumaCount5D {
 
     static boolean testingPullingTestOrders = false;
     static boolean testingPushingTestResults = false;
 
-    public static final Logger logger = LogManager.getLogger(Indiko.class);
+    public static final Logger logger = LogManager.getLogger(HumaCount5D.class);
     
-    private static IndikoServer server = new IndikoServer(); // Make the server instance static for restart
+    private static HumaCount5DServer server = new HumaCount5DServer(); // Make the server instance static for restart
 
     public static void main(String[] args) {
         if (testingPullingTestOrders) {
@@ -55,7 +55,7 @@ public class Indiko {
         }
 
         int port = SettingsLoader.getSettings().getAnalyzerDetails().getAnalyzerPort();
-        server = new IndikoServer();
+        server = new HumaCount5DServer();
         server.start(port);
     }
 
@@ -63,13 +63,13 @@ public class Indiko {
         int port = SettingsLoader.getSettings().getAnalyzerDetails().getAnalyzerPort();
         try {
             logger.info("Stopping server...");
-            server.stop(); // Implement the stop() method in IndikoServer to cleanly shut down the server
+            server.stop(); // Implement the stop() method in HumaCount5DServer to cleanly shut down the server
 
             logger.info("Waiting before restart...");
             Thread.sleep(2000); // Pause for 2 seconds before restarting
 
             logger.info("Restarting server on port " + port + "...");
-            server = new IndikoServer(); // Create a new instance of the server
+            server = new HumaCount5DServer(); // Create a new instance of the server
             server.start(port);
             logger.info("Server restarted successfully.");
 
