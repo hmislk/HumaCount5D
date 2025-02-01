@@ -98,7 +98,7 @@ public class LISCommunicator {
         SettingsLoader.loadSettings();
         try {
 
-            String pushResultsEndpoint = SettingsLoader.getSettings().getLimsSettings().getLimsServerBaseUrl() + "/observation";
+            String pushResultsEndpoint = SettingsLoader.getSettings().getLimsSettings().getLimsServerBaseUrl() + "/test_results";
             System.out.println("pushResultsEndpoint = " + pushResultsEndpoint);
             URL url = new URL(pushResultsEndpoint);
             HttpURLConnection conn = (HttpURLConnection) url.openConnection();
