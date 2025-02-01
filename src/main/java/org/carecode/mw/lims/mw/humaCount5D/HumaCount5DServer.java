@@ -98,7 +98,7 @@ public class HumaCount5DServer {
                         String resultDateTime = "";
 
                         ResultsRecord rr = new ResultsRecord(testCode, resultValue, resultUnits,
-                                resultDateTime, "MindRayBC5150", sampleId);
+                                resultDateTime, "HumaCount5D", sampleId);
                         DataBundle db = new DataBundle();
                         db.setMiddlewareSettings(middlewareSettings);
 
