@@ -63,7 +63,7 @@ public class HumaCount5DServer {
                     break;
                 }
                 logger.debug("Received HL7 Message: " + message);
-                processHL7Message(message, out);
+                processHL7Message(message);
             }
         } catch (IOException e) {
             logger.error("Error during client communication", e);
@@ -73,44 +73,44 @@ public class HumaCount5DServer {
     public void processHL7Message(String hl7Message) {
         LISCommunicator lisCommunicator = new LISCommunicator();
         logger.info("Processing HL7 message from Mindray BC 5150 Analyzer");
-        StringBuilder messageBuilder = new StringBuilder();
         String sampleId = "";
 
         BufferedReader reader = new BufferedReader(new StringReader(hl7Message));
         String line;
         try {
             while ((line = reader.readLine()) != null) {
-                messageBuilder.append(line).append("\n");
+                line = line.trim();
+                logger.info("Received data: " + line);
 
                 if (line.startsWith("OBR|")) {
                     String[] parts = line.split("\\|");
                     if (parts.length > 3) {
-                        sampleId = parts[3];
+                        sampleId = parts[3].trim();
                         logger.info("Sample ID extracted: " + sampleId);
                     }
                 } else if (line.startsWith("OBX|")) {
                     String[] parts = line.split("\\|");
                     if (parts.length > 6) {
                         String[] testDetails = parts[3].split("\\^");
-                        String testCode = testDetails.length > 1 ? testDetails[1] : testDetails[0];
-                        String resultValue = parts[5];
-                        String resultUnits = parts[6];
-                        String resultDateTime = "";
+                        String testCode = testDetails.length > 1 ? testDetails[1].trim() : testDetails[0].trim();
+                        String resultValueString = parts[5].trim();
+                        String resultUnits = parts[6].trim();
+                        String resultDateTime = "";  // Set as needed.
 
-                        ResultsRecord rr = new ResultsRecord(testCode, resultValue, resultUnits,
-                                resultDateTime, "HumaCount5D", sampleId);
+                        // Use the library constructor:
+                        // ResultsRecord(String testCode, String resultValueString, String resultUnits, String resultDateTime, String instrumentName, String sampleId)
+                        ResultsRecord rr = new ResultsRecord(testCode, resultValueString, resultUnits, resultDateTime, "MindRayBC5150", sampleId);
+
                         DataBundle db = new DataBundle();
                         db.setMiddlewareSettings(middlewareSettings);
-
                         db.getResultsRecords().add(rr);
                         LISCommunicator.pushResults(db);
 
                         logger.info("Test Code: " + testCode);
-                        logger.info("Result Value: " + resultValue);
+                        logger.info("Result Value: " + resultValueString);
                         logger.info("Result Units: " + resultUnits);
                     }
                 }
-                logger.info("Received data: " + line);
             }
         } catch (IOException e) {
             logger.error("Error processing HL7 message", e);
